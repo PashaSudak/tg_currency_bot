@@ -12,9 +12,11 @@ class Currency:
         self.buy = buy
         self.sell = sell
 
-    def exchange(self,newCurrency):
+    def exchangeRate(self,newCurrency):
         return self.sell / newCurrency.buy
 
+    def buyCurrency(self,newCurrency,count):
+        return count * self.sell / newCurrency.buy
 
 
 currencyUSD = Currency(exchanges[0]["rateSell"],exchanges[0]["rateBuy"])
