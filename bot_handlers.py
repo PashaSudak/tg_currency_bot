@@ -1,7 +1,7 @@
 import telebot
 from keyboard import *
 from config import TOKEN
-from ExchangesData import currencyList, exchanges
+from ExchangesData import currencyList
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -22,44 +22,43 @@ def help(message):
     )
 
 userValue = -1
-userValueSymbol = ""
-userValueInUAH = -1
+userValueID = ""
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'USD_rate')
 def get_usd_rate(call):
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
-                          text= "1$ = " + str(currencyList['USD'].exchange(currencyList['EUR'])) +
-                                "€\n1$ = " + str(currencyList['USD'].exchange(currencyList['RUB'])) +
-                                "₽\n1$ = " + str(currencyList['USD'].sell) + "₴")
+                          text= "1USD = " + str(currencyList['USD'].exchangeRate(currencyList['EUR'])) +
+                                "EUR\n1USD = " + str(currencyList['USD'].exchangeRate(currencyList['RUB'])) +
+                                "RUB\n1USD = " + str(currencyList['USD'].sell) + "UAH")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'EUR_rate')
 def get_usd_rate(call):
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
-                          text="1€ = " + str(currencyList['EUR'].exchange(currencyList['USD'])) +
-                                "$\n1€ = " + str(currencyList['EUR'].exchange(currencyList['RUB'])) +
-                                "₽\n1€ = " + str(currencyList['EUR'].sell) + "₴")
+                          text="1EUR = " + str(currencyList['EUR'].exchangeRate(currencyList['USD'])) +
+                                "USD\n1EUR = " + str(currencyList['EUR'].exchangeRate(currencyList['RUB'])) +
+                                "RUB\n1EUR = " + str(currencyList['EUR'].sell) + "UAH")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'RUB_rate')
 def get_usd_rate(call):
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
-                          text="1₽ = " + str(currencyList['RUB'].exchange(currencyList['USD'])) +
-                               "$\n1₽ = " + str(currencyList['RUB'].exchange(currencyList['EUR'])) +
-                               "€\n1₽ = " + str(currencyList['RUB'].sell) + "₴")
+                          text="1RUB = " + str(currencyList['RUB'].exchangeRate(currencyList['USD'])) +
+                               "USD\n1RUB = " + str(currencyList['RUB'].exchangeRate(currencyList['EUR'])) +
+                               "EUR\n1RUB = " + str(currencyList['RUB'].sell) + "UAH")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'UAH_rate')
 def get_usd_rate(call):
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
-                          text="1₴ = " + str(currencyList['UAH'].exchange(currencyList['USD'])) +
-                               "$\n1₴ = " + str(currencyList['UAH'].exchange(currencyList['EUR'])) +
-                               "€\n1₴ = " + str(currencyList['UAH'].exchange(currencyList['RUB'])) + "₽")
+                          text="1UAH = " + str(currencyList['UAH'].exchangeRate(currencyList['USD'])) +
+                               "USD\n1UAH = " + str(currencyList['UAH'].exchangeRate(currencyList['EUR'])) +
+                               "EUR\n1UAH = " + str(currencyList['UAH'].exchangeRate(currencyList['RUB'])) + "RUB")
 
 
 @bot.message_handler(content_types=['text'])
@@ -96,10 +95,8 @@ def step1(message):
 
 @bot.callback_query_handler(func=lambda call: call.data == 'userUSD')
 def get_usd_rate(call):
-    global userValueInUAH
-    global userValueSymbol
-    userValueInUAH = float(userValue) * float(exchanges[0]["rateSell"])
-    userValueSymbol = "$"
+    global userValueID
+    userValueID = "USD"
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
                           text="Введіть валюту яку ви хочете отримать",
@@ -108,10 +105,8 @@ def get_usd_rate(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == 'userEUR')
 def get_usd_rate(call):
-    global userValueInUAH
-    global userValueSymbol
-    userValueInUAH = float(userValue) * float(exchanges[1]["rateSell"])
-    userValueSymbol = "€"
+    global userValueID
+    userValueID = "EUR"
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
                           text="Введіть валюту яку ви хочете отримать",
@@ -120,10 +115,8 @@ def get_usd_rate(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == 'userRUB')
 def get_usd_rate(call):
-    global userValueInUAH
-    global userValueSymbol
-    userValueInUAH = float(userValue) * float(exchanges[2]["rateSell"])
-    userValueSymbol = "₽"
+    global userValueID
+    userValueID = "RUB"
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
                           text="Введіть валюту яку ви хочете отримать",
@@ -132,10 +125,8 @@ def get_usd_rate(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == 'userUAH')
 def get_usd_rate(call):
-    global userValueInUAH
-    global userValueSymbol
-    userValueInUAH = float(userValue)
-    userValueSymbol = "₴"
+    global userValueID
+    userValueID = "UAH"
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
                           text="Введіть валюту яку ви хочете отримать",
@@ -144,30 +135,27 @@ def get_usd_rate(call):
 
 @bot.callback_query_handler(func=lambda call: call.data == 'getUSD')
 def get_usd_rate(call):
-    inUsd = float(userValueInUAH) / float(exchanges[0]["rateBuy"])
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
-                          text=str(userValue) + userValueSymbol + "  = " + str(inUsd) + "$")
+                          text=f"{userValue} {userValueID} = {currencyList[userValueID].buyCurrency(currencyList['USD'],userValue)} USD")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'getEUR')
 def get_usd_rate(call):
-    inEur = float(userValueInUAH) / float(exchanges[1]["rateBuy"])
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
-                          text=str(userValue) + userValueSymbol + "  = " + str(inEur) + "€")
+                          text=f"{userValue} {userValueID} = {currencyList[userValueID].buyCurrency(currencyList['EUR'],userValue)} EUR")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'getRUB')
 def get_usd_rate(call):
-    inRub = float(userValueInUAH) / float(exchanges[2]["rateBuy"])
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
-                          text=f"{str(userValue)} {userValueSymbol}  = {str(inRub)} ₽")
+                          text=f"{userValue} {userValueID}  = {currencyList[userValueID].buyCurrency(currencyList['RUB'],userValue)} RUB")
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'getUAH')
 def get_usd_rate(call):
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
-                          text=f"{str(userValue)} {userValueSymbol} = {str(userValueInUAH)} ₴")
+                          text=f"{userValue} {userValueID} = {currencyList[userValueID].buyCurrency(currencyList['UAH'],userValue)} UAH")
