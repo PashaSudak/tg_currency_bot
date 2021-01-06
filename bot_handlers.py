@@ -14,12 +14,14 @@ def hello(message):
         reply_markup=main_keyboard
     )
 
+
 @bot.message_handler(commands=['help'])
 def help(message):
     msg = bot.send_message(
         chat_id=message.chat.id,
         text='😳 Розробив 😳 Судак 😳 Павло 😳'
     )
+
 
 userValue = -1
 userValueID = ""
@@ -62,7 +64,7 @@ def get_usd_rate(call):
 
 
 @bot.message_handler(content_types=['text'])
-def step1(message):
+def textReader(message):
     global userValue
     if (message.text.isnumeric()):
         userValue = float(message.text)
@@ -93,50 +95,27 @@ def step1(message):
             )
 
 
-@bot.callback_query_handler(func=lambda call: call.data == 'userUSD')
-def get_usd_rate(call):
+@bot.callback_query_handler(func=lambda call: call.data == 'userUSD' or
+                                              call.data == 'userEUR' or
+                                              call.data == 'userRUB' or
+                                              call.data == 'userUAH')
+def getUserValueID(call):
     global userValueID
-    userValueID = "USD"
+    userValueID = call.data
+    userValueID = userValueID[-3:]
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
                           text="Введіть валюту яку ви хочете отримать",
                           reply_markup=calcCurrency)
 
 
-@bot.callback_query_handler(func=lambda call: call.data == 'userEUR')
-def get_usd_rate(call):
-    global userValueID
-    userValueID = "EUR"
-    bot.edit_message_text(chat_id=call.message.chat.id,
-                          message_id=call.message.id,
-                          text="Введіть валюту яку ви хочете отримать",
-                          reply_markup=calcCurrency)
-
-
-@bot.callback_query_handler(func=lambda call: call.data == 'userRUB')
-def get_usd_rate(call):
-    global userValueID
-    userValueID = "RUB"
-    bot.edit_message_text(chat_id=call.message.chat.id,
-                          message_id=call.message.id,
-                          text="Введіть валюту яку ви хочете отримать",
-                          reply_markup=calcCurrency)
-
-
-@bot.callback_query_handler(func=lambda call: call.data == 'userUAH')
-def get_usd_rate(call):
-    global userValueID
-    userValueID = "UAH"
-    bot.edit_message_text(chat_id=call.message.chat.id,
-                          message_id=call.message.id,
-                          text="Введіть валюту яку ви хочете отримать",
-                          reply_markup=calcCurrency)
-
-
-@bot.callback_query_handler(func=lambda call: call.data == 'getUSD'  or 'getEUR' or 'getRUB' or 'getUAH')
-def get_usd_rate(call):
+@bot.callback_query_handler(func=lambda call: call.data == 'getUSD' or
+                                              call.data == 'getEUR' or
+                                              call.data == 'getRUB' or
+                                              call.data == 'getUAH')
+def printNewValue(call):
     wantedCurrencyID = call.data
-    wantedCurrencyID = wantedCurrencyID[3:]
+    wantedCurrencyID = wantedCurrencyID[-3:]
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
-                          text=f"{userValue} {userValueID} = {currencyList[userValueID].buyCurrency(currencyList[wantedCurrencyID],userValue)} {wantedCurrencyID}")
+                          text=f"{userValue} {userValueID} = {currencyList[userValueID].buyCurrency(currencyList[wantedCurrencyID], userValue)} {wantedCurrencyID}")
