@@ -103,10 +103,11 @@ def getUserValueID(call):
     global userValueID
     userValueID = call.data
     userValueID = userValueID[-3:]
+    calcCurrencyKB = initCalcKB(call.data)
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
                           text="Введіть валюту яку ви хочете отримать",
-                          reply_markup=calcCurrency)
+                          reply_markup=calcCurrencyKB)
 
 
 @bot.callback_query_handler(func=lambda call: call.data == 'getUSD' or
