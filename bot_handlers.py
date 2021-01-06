@@ -133,10 +133,10 @@ def get_usd_rate(call):
                           reply_markup=calcCurrency)
 
 
-@bot.callback_query_handler(func=lambda call: call.data == 'getUSD' or 'getEUR' or 'getRUB' or 'getUAH')
+@bot.callback_query_handler(func=lambda call: call.data == 'getUSD'  or 'getEUR' or 'getRUB' or 'getUAH')
 def get_usd_rate(call):
-    wantedCurrncyID = call.data
-    wantedCurrncyID = wantedCurrncyID[3:]
+    wantedCurrencyID = call.data
+    wantedCurrencyID = wantedCurrencyID[3:]
     bot.edit_message_text(chat_id=call.message.chat.id,
                           message_id=call.message.id,
-                          text=f"{userValue} {userValueID} = {currencyList[userValueID].buyCurrency(currencyList[wantedCurrncyID],userValue)} {wantedCurrncyID}")
+                          text=f"{userValue} {userValueID} = {currencyList[userValueID].buyCurrency(currencyList[wantedCurrencyID],userValue)} {wantedCurrencyID}")
