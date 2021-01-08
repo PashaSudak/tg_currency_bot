@@ -1,14 +1,13 @@
 from telebot import types
 
-main_keyboard = types.ReplyKeyboardMarkup(resize_keyboard = True)
+main_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
 
 key1 = types.KeyboardButton('Перевести валюту 😳')
 key2 = types.KeyboardButton('Поточні курси 💰')
 main_keyboard.add(key1, key2)
 
 
-
-userCurrency = types.InlineKeyboardMarkup(row_width = 1)
+userCurrency = types.InlineKeyboardMarkup(row_width=1)
 key1 = types.InlineKeyboardButton(text="Доллари $", callback_data='userUSD')
 key2 = types.InlineKeyboardButton(text="Євро €", callback_data='userEUR')
 key3 = types.InlineKeyboardButton(text="Рубль ₽", callback_data='userRUB')
@@ -16,32 +15,32 @@ key4 = types.InlineKeyboardButton(text="Гривня ₴", callback_data='userUA
 userCurrency.add(key1, key2, key3, key4)
 
 
-def initCalcKB(userValueID):
+def init_calc_kb(user_value_id):
 
-    calcCurrencyKB = types.InlineKeyboardMarkup(row_width = 1)
+    calc_currency_kb = types.InlineKeyboardMarkup(row_width=1)
 
-    if userValueID == 'USD':
-        key1 = types.InlineKeyboardButton(text="Гривня ₴", callback_data='getUAH')
-        key2 = types.InlineKeyboardButton(text="Євро €", callback_data='getEUR')
-        key3 = types.InlineKeyboardButton(text="Рубль ₽", callback_data='getRUB')
-    elif userValueID == 'EUR':
-        key1 = types.InlineKeyboardButton(text="Гривня ₴", callback_data='getUAH')
-        key2 = types.InlineKeyboardButton(text="Євро €", callback_data='getEUR')
-        key3 = types.InlineKeyboardButton(text="Рубль ₽", callback_data='getRUB')
-    elif userValueID == 'RUB':
-        key1 = types.InlineKeyboardButton(text="Доллари $", callback_data='getUSD')
-        key2 = types.InlineKeyboardButton(text="Євро €", callback_data='getEUR')
-        key3 = types.InlineKeyboardButton(text="Гривня ₴", callback_data='getUAH')
+    if user_value_id == 'USD':
+        button1 = types.InlineKeyboardButton(text="Гривня ₴", callback_data='getUAH')
+        button2 = types.InlineKeyboardButton(text="Євро €", callback_data='getEUR')
+        button3 = types.InlineKeyboardButton(text="Рубль ₽", callback_data='getRUB')
+    elif user_value_id == 'EUR':
+        button1 = types.InlineKeyboardButton(text="Гривня ₴", callback_data='getUAH')
+        button2 = types.InlineKeyboardButton(text="Євро €", callback_data='getEUR')
+        button3 = types.InlineKeyboardButton(text="Рубль ₽", callback_data='getRUB')
+    elif user_value_id == 'RUB':
+        button1 = types.InlineKeyboardButton(text="Доллари $", callback_data='getUSD')
+        button2 = types.InlineKeyboardButton(text="Євро €", callback_data='getEUR')
+        button3 = types.InlineKeyboardButton(text="Гривня ₴", callback_data='getUAH')
     else:
-        key1 = types.InlineKeyboardButton(text="Доллари $", callback_data='getUSD')
-        key2 = types.InlineKeyboardButton(text="Євро €", callback_data='getEUR')
-        key3 = types.InlineKeyboardButton(text="Рубль ₽", callback_data='getRUB')
+        button1 = types.InlineKeyboardButton(text="Доллари $", callback_data='getUSD')
+        button2 = types.InlineKeyboardButton(text="Євро €", callback_data='getEUR')
+        button3 = types.InlineKeyboardButton(text="Рубль ₽", callback_data='getRUB')
 
-    calcCurrencyKB.add(key1, key2, key3)
-    return calcCurrencyKB
+    calc_currency_kb.add(button1, button2, button3)
+    return calc_currency_kb
 
 
-rate_menu = types.InlineKeyboardMarkup(row_width = 1)
+rate_menu = types.InlineKeyboardMarkup(row_width=1)
 key1 = types.InlineKeyboardButton(text="Курс доллара", callback_data='USD_rate')
 key2 = types.InlineKeyboardButton(text="Курс євро", callback_data='EUR_rate')
 key3 = types.InlineKeyboardButton(text="Курс рубля", callback_data='RUB_rate')
